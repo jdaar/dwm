@@ -1,6 +1,6 @@
-**.o
-**.c.rej
-**.c.orig
-**.h.rej
-**.h.orig
-**.1
+*
+!*.def.h
+!*.h
+!*.def.c
+!*.c
+!*.diff
