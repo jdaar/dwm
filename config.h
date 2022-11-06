@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -67,12 +68,25 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *browser[]  = { "firefox", NULL };
+static const char *prev_song[]  = { "playerctl", "--player=spotify", "previous", NULL };
+static const char *next_song[]  = { "playerctl", "--player=spotify", "next", NULL };
+static const char *play_pause[]  = { "playerctl", "--player=spotify", "play-pause", NULL };
+static const char *volume_down[]  = { "amixer", "-q", "-D", "pulse", "set", "Master", "5%-", "unmute", NULL };
+static const char *volume_up[]  = { "amixer", "-q", "-D", "pulse", "set", "Master", "5%+", "unmute", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+	// FN keys
+	{ 0,                       XF86XK_AudioLowerVolume,      spawn,          {.v = volume_down } },
+	{ 0,                       XF86XK_AudioRaiseVolume,      spawn,          {.v = volume_up } },
+	// Spotify
+	{ 0,                       XF86XK_AudioPlay,      spawn,          {.v = play_pause } },
+	{ 0,                       XF86XK_AudioPrev,      spawn,          {.v = prev_song } },
+	{ 0,                       XF86XK_AudioNext,      spawn,          {.v = next_song } },
+	// Normal
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = browser } },
